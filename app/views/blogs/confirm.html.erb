@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <div class="main_contents">
+    <ul class="row row-eq-height">
+      <li class="col-xs-12 col-sm-12 col-md-12 b-radius main_contents_area main_contents_background_color">
+        <ul class="row row-eq-height">
+          <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
+            <h1>確認画面</h1>
+            <%= form_with(model: @blog,local: true) do |form| %>
+              <table>
+                <tr>
+                  <td>投稿コメント：</td>
+                  <td><%= @blog.content %></td>
+                </tr>
+                <tr>
+                  <td>投稿写真：</td>
+                  <td>
+                    <% if @blog.image && @blog.image.url %>
+                      <%= image_tag(@blog.image.url) %>
+                    <% else %>
+                      <%= image_tag('no_image.png') %>
+                    <% end %>
+                  </td>
+                </tr>
+              </table>
+              <table>
+                <tr>
+                  <td><%= form.submit "投稿する",class: "btn btn-primary" %></td>
+                  <%= form.hidden_field :content %>
+                  <%= form.hidden_field :image_cache %>
+            <% end %>
+
+                  <%= form_with(model: @blog, url: root_path, local: true, method: 'get') do |form| %>
+                    <td><%= form.submit "書き直す",name: 'back',class: "btn btn-info" %></td>
+                    <td><%= link_to 'キャンセル',root_path ,class: "btn btn-danger" %></td>
+                    <%= form.hidden_field :content %>
+                    <%= form.hidden_field :image_cache %>
+                  <% end %>
+                </tr>
+              </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

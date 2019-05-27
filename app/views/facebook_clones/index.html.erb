@@ -1,0 +1,240 @@
+<!-- ログイン状態によってindex画面の描画を変更 -->
+<% if current_user.present? %>
+  <div class="container-fluid">
+
+    <!-- エラーメッセージ表示エリア -->
+    <ul class="row accordion">
+      <li class="col-xs-12 col-sm-12 col-md-12 center alert alert-danger" role="alert">
+        <% flash.each do |key,value| %>
+          <%= content_tag(:div,value,class: "#{key}") %>
+        <% end %>
+        <% if @blog.errors.any? %>
+          <div id="error_explanation">
+            <ul>
+              <% @blog.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+
+    <div class="main_contents">
+      <ul class="row row-eq-height">
+
+        <!-- 簡易プロフィール表示エリア -->
+        <li class="hidden-xs hidden-sm col-md-2 b-radius main_contents_area main_contents_background_color">
+          <div class="row profile_background b-radius user_center">
+            <p>User：<%= link_to "#{current_user.name}",user_path(current_user.id) %></p>
+            <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
+            <div class="user_icon"><%= fa_stacked_icon("user", base: "circle-o")  %></div>
+            <p>No image</p>
+          </div>
+        </li>
+
+        <ul class="col-xs-12 col-sm-12 col-md-5 row">
+
+          <!-- 新規投稿エリア -->
+          <li class="col-xs-12 col-sm-12 col-md-12 b-radius post_area">
+            ◆入力画面◆
+            <%= form_with(model: @blog ,url: confirm_blogs_path, local: true) do |form| %>
+              <div class="field">
+                <table class="new_blog_creat_field">
+                  <tr>
+                    <td>
+                        <%= form.label '↓クリックでファイル選択' %>
+                        <div id="img_field" onClick="$('#file').click()">
+                          <% if @blog.image.url.present? %>
+                            <%= image_tag(@blog.image.url) %>
+                          <% else %>
+                            <i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>
+                          <% end %>
+                        </div>
+                    </td>
+                    <td>
+                      <%= form.label :content %><br>
+                      <div id="content_field"><%= form.text_area :content %></div>
+                    </td>
+                  </tr>
+                </table>
+                <%= form.file_field :image,class: "image", style: "display:none;",id: "file" %>
+                <%= form.hidden_field :image_cache %>
+              </div>
+              <div class="blog_create_button">
+                <table>
+                  <tr>
+                    <td><%= form.submit "投稿",class: "btn btn-primary btn-sm" %></td>
+            <% end %>
+                    <%= form_with(model: @blog, url: root_path, local: true, method: 'get') do |form| %>
+                      <td><%= form.submit "リセット",name: 'reset',class: "btn btn-secondary btn-sm" %></td>
+                    <% end %>
+                  </tr>
+                </table>
+              </div>
+          </li>
+
+          <li class="col-xs-12 col-sm-12 col-md-12 b-radius list_of_articles main_contents_background_color">
+            <p>◆最新ブログ記事(10件表示)◆</p>
+            <p><%= link_to 'すべてのブログ記事一覧を表示する', list_blogs_path %></p>
+                <% @blogs.last(10).reverse().each do |list| %>
+                  <div class="row no-gutters list_background b-radius">
+                    <div class="col-xs-4 col-sm-4 col-md-4 top_blog_list">
+                      <% if list.image && list.image.url %>
+                        <%= image_tag(list.image.url(:thumb,class: "card-img")) %>
+                      <% else %>
+                        <div class="icon"><%= image_tag('no_image.png') %></div>
+                      <% end %>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">投稿したユーザー：<%= list.user.name %></h5>
+                        <p>コメント：<%= list.content %></p>
+                        <%= link_to '記事を見る',blog_path(id: list.id),class: "btn btn-primary btn-sm" %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+          </li>
+        </ul>
+
+        <li class="hidden-xs hidden-sm col-md-4 b-radius main_contents_area main_contents_background_color">
+          <p>
+            ◆お気に入りにしたブログ(10件表示)◆<br>
+            【課題：今はログインしているユーザーが、お気に入り登録した、blogテーブルの古い順に並んでいるが、最近お気に入り登録した記事順に表示できるようにしたい】
+          </p>
+          <p><%= link_to 'すべてのお気に入りブログを表示する', user_path(current_user.id) %></p>
+          <% @blogs_favo.last(10).reverse().each do |list| %>
+            <div class="row no-gutters list_background b-radius">
+              <div class="col-xs-4 col-sm-4 col-md-4 top_blog_list">
+                <% if list.image && list.image.url %>
+                  <%= image_tag(list.image.url(:thumb,class: "card-img")) %>
+                <% else %>
+                  <div class="icon"><%= image_tag('no_image.png') %></div>
+                <% end %>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">投稿したユーザー：<%= list.user.name %></h5>
+                  <p>コメント：<%= list.content %></p>
+                  <%= link_to '記事を見る',blog_path(id: list.id),class: "btn btn-primary btn-sm" %>
+                  <!-- favorite_pathに渡すfavoriteテーブルのid取得方法がわかればお気に入り解除ボタン実装可能 -->
+                  <%#= link_to 'お気に入り解除する',favorite_path(id: current_user.id),method: :delete,class: 'btn btn-danger btn-sm' %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </li>
+
+        <li class="hidden-xs hidden-sm col-md-1 b-radius main_contents_area main_contents_background_color">
+          <p>フレンド一覧</p>
+          <p>実装未定</p>
+          <p>インスタグラム課題では実装します</p>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+<% else %>
+
+  <div class="container-fluid">
+    <ul class="row accordion">
+
+      <!-- Login,アカウント作成エラーメッセージエリア -->
+      <li class="col-xs-12 col-sm-12 col-md-12 center alert alert-danger" role="alert">
+        <% flash.each do |key,value| %>
+          <%= content_tag(:div,value,class: "#{key}") %>
+        <% end %>
+        <% if @blog.errors.any? %>
+          <div id="error_explanation">
+            <ul>
+              <% @blog.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <% if @user.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@user.errors.count,"error") %>：アカウント作成ができませんでした。</h2>
+
+            <ul>
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+    <div class="main_contents">
+      <ul class="row row-eq-height">
+        <li class="col-xs-12 col-sm-12 col-md-6 b-radius main_contents_area main_contents_background_color">
+          <ul class="row row-eq-height">
+            <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
+              <h1>Log in</h1><br>
+              <p>テスト用アカウント</p>
+              <p>Email : test@test.test　/　Password : testtest</p><br>
+              <%= form_with(scope: :session,url: sessions_path,local: true) do |f| %>
+                <table>
+                  <tr>
+                    <td><%= f.label :email %></td>
+                    <td><%= f.email_field :email %></td>
+                  </tr>
+                  <tr>
+                    <td><%= f.label :password %></td>
+                    <td><%= f.password_field :password %></td>
+                  </tr>
+                </table>
+                <div class="blog_create_button">
+                  <%= f.submit "Log in" ,class: "btn btn-primary"%>
+                </div>
+              <% end %>
+            </li>
+          </ul>
+        </li>
+        <li class="col-xs-12 col-sm-12 col-md-6 b-radius main_contents_area main_contents_background_color">
+          <ul class="row row-eq-height">
+            <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
+              <h1>アカウントを新規登録する</h1>
+
+              <%= form_with(model: @user, local: true) do |f| %>
+
+                <table>
+                  <tr>
+                    <td><%= f.label :name %></td>
+                    <td><%= f.text_field :name %></td>
+                  </tr>
+
+                  <tr>
+                    <td><%= f.label :email %></td>
+                    <td><%= f.email_field :email %></td>
+                  </tr>
+
+                  <tr>
+                    <td><%= f.label :password %></td>
+                    <td><%= f.password_field :password %></td>
+                  </tr>
+
+                  <tr>
+                    <td><%= f.label :password_confirmation %></td>
+                    <td><%= f.password_field :password_confirmation %></td>
+                  </tr>
+
+                </table>
+                <br>
+                <div class="blog_create_button">
+                  <%= f.submit "登録する" ,class: "btn btn-primary"%>
+                  <input type="reset" value="リセット" class="btn btn-secondary">
+                </div>
+              <% end %>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+<% end %>

@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="b-radius main_contents_background_color">
+  <h2 class="white">ALLブログ一覧</h2>
+    <div class="row all_blog_list_menu">
+      <% i = 0 %>
+      <% @blogs.reverse().each do |list| %>
+        <div class="col-md-4">
+          <div class="card row no-gutters b-radius">
+            <div class="col-xs-4 col-sm-4 col-md-4 card-img-top">
+              <% if list.image && list.image.url %>
+                <%= image_tag(list.image.url) %>
+              <% else %>
+                <%= image_tag('no_image.png') %>
+              <% end %>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">投稿したユーザー：<%= list.user.name %></h3>
+                <p>コメント：<%= list.content %></p>
+                <%= link_to '記事を見る',blog_path(id: list.id),class: "btn btn-primary btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% i += 1 %>
+        <% if i > 2 %>
+          </div>
+          <div class="row all_blog_list_menu">
+          <% i = 0 %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="container-fluid">
+  <div class="b-radius main_contents_background_color">
+    <ul class="row accordion">
+      <li class="hidden-xs hidden-sm col-md-12 b-radius main_contents_area main_contents_background_color">
+        <div class="row profile_background b-radius user_center">
+          <p><h2><%= @user.name %>さんのアカウント詳細ページ</h2></p>
+          <p>メールアドレス： <%= @user.email %></p>
+          <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
+          <div class="user_icon"><%= fa_stacked_icon("user", base: "circle-o")  %></div>
+          <p>No image</p>
+        </div>
+      </li>
+    </ul>
+
+    <ul class="row all_blog_list_menu">
+      <li class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row b-radius favo_h">
+          <h4><%= @user.name %>さんが、投稿したブログ一覧</h4>
+        </div>
+      </li>
+    </ul>
+
+    <div class="row all_blog_list_menu">
+      <% i = 0 %>
+      <% @my_blogs.reverse().each do |list| %>
+        <div class="col-md-4">
+          <div class="card row no-gutters b-radius">
+            <div class="col-xs-4 col-sm-4 col-md-4 card-img-top">
+              <% if list.image && list.image.url %>
+                <%= image_tag(list.image.url) %>
+              <% else %>
+                <%= image_tag('no_image.png') %>
+              <% end %>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">投稿したユーザー：<%= list.user.name %></h3>
+                <p>コメント：<%= list.content %></p>
+                <%= link_to '記事を見る',blog_path(id: list.id),class: "btn btn-primary btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% i += 1 %>
+        <% if i > 2 %>
+          </div>
+          <div class="row all_blog_list_menu">
+            <% i = 0 %>
+        <% end %>
+      <% end %>
+    </div>
+
+
+    <ul class="row all_blog_list_menu">
+      <li class="col-xs-12 col-sm-12 col-md-12">
+        <div class="row b-radius favo_h">
+          <h4><%= @user.name %>さんが、お気に入り登録したブログ一覧</h4>
+        </div>
+      </li>
+    </ul>
+
+    <div class="row all_blog_list_menu">
+      <% i = 0 %>
+      <% @blogs_favo.reverse().each do |list| %>
+        <div class="col-md-4">
+          <div class="card row no-gutters b-radius">
+            <div class="col-xs-4 col-sm-4 col-md-4 card-img-top">
+              <% if list.image && list.image.url %>
+                <%= image_tag(list.image.url) %>
+              <% else %>
+                <%= image_tag('no_image.png') %>
+              <% end %>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-8">
+              <div class="card-body">
+                <h3 class="card-title">投稿したユーザー：<%= list.user.name %></h3>
+                <p>コメント：<%= list.content %></p>
+                <%= link_to '記事を見る',blog_path(id: list.id),class: "btn btn-primary btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% i += 1 %>
+        <% if i > 2 %>
+          </div>
+          <div class="row all_blog_list_menu">
+            <% i = 0 %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

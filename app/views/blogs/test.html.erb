@@ -1,0 +1,95 @@
+<div class="container-fluid main_contents">
+  <ul class="row row-eq-height">
+    <li class="col-xs-12 col-sm-12 col-md-12 b-radius main_contents_area main_contents_background_color">
+      <ul class="row row-eq-height">
+        <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
+
+          <h2>ブログ記事詳細ページ</h2>
+          <p>投稿したユーザー：<%= @blog.user.name %></p>
+          <p>
+            <% if @blog.image && @blog.image.url %>
+              <%= image_tag(@blog.image.url) %>
+            <% else %>
+              <%= image_tag('no_image.png') %>
+            <% end %>
+          </p>
+          <p>コメント：<%= @blog.content %></p>
+          <% if current_user.name == @blog.user.name %>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@blog">編集</button>
+            <%= link_to '削除',blog_path(id: @blog.id),method: :delete,class: "btn btn-danger" ,
+                      data: {confirm: '本当に削除してもよろしいですか？',cancel: 'キャンセル',commit: '削除する',title: '削除確認'} %>
+          <% end %>
+          <% unless @blog.user_id == current_user.id %>
+            <% if @favorite.present? %>
+              <%= link_to 'お気に入り解除する',favorite_path(id: @favorite.id),method: :delete,class: 'btn btn-danger' %>
+            <% else %>
+              <%= link_to 'お気に入りする', favorites_path(blog_id: @blog.id), method: :post, class: 'btn btn-primary' %>
+            <% end %>
+          <% end %>
+          <%= link_to 'TOPページに戻る',root_path ,class: "btn btn-info" %>
+
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">編集内容</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <%= form_with(model: @blog, local: true) do |form| %>
+                  <div class="modal-body">
+                      <div class="field">
+                        <table>
+                          <tr>
+                            <th>コメント</th><td>：</td><td><%= form.text_area :content %></td>
+                          </tr>
+                          <tr>
+                            <th>画像</th><td>：</td>
+                            <td>
+                              <div class="field image">
+                                <%= form.label '↓クリックでファイル選択' %>
+                                <div id="img_field" onClick="$('#file').click()">
+                                  <% if @blog.image.url.present? %>
+                                    <%= image_tag(@blog.image.url,:size => "200x150") %>
+                                  <% else %>
+                                    <i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>
+                                  <% end %>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                        <br>
+                        <p>画像を変更したい場合は、新しい画像を選択して下さい</p>
+                        <%= form.file_field :image,class: "image", style: "display:none;",id: "file" %>
+                        <%= form.hidden_field @blog.image.url if @blog.image && @blog.image.url %>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    <input type="reset" value="リセット" class="btn btn-secondary" id="deleteButton" onclick="img_field_change()">
+                      <%= form.submit("確定",class: "btn btn-primary",
+                                      data:{confirm: '本当に編集してもよろしいですか？',cancel: 'キャンセル',commit: '編集する',title: '編集確認'}) %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            const img_field_change = function(){
+              const img_chenge = document.getElementById('img_field');
+              <% if @blog.image && @blog.image.url %>
+                img_chenge.innerHTML = '<%= image_tag(@blog.image.url,:size => "200x150") %>';
+              <% else %>
+                img_chenge.innerHTML = '<i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>';
+              <% end %>
+            }
+          </script>
+
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,16 @@
+<ul class="row accordion">
+  <li class="center alert alert-danger" role="alert">
+    <% flash.each do |key,value| %>
+      <%= content_tag(:div,value,class: "#{key}") %>
+    <% end %>
+    <% if @blog.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+          <% @blog.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </li>
+</ul>
