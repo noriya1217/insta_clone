@@ -28,7 +28,7 @@
           <div class="row profile_background b-radius user_center">
             <p>User：<%= link_to "#{current_user.name}",user_path(current_user.id) %></p>
             <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
-            <div class="user_icon"><%= fa_stacked_icon("user", base: "circle-o")  %></div>
+            <%= link_to "", user_path(current_user.id),class: "far fa-user menu_right user_icon" %>
             <p>No image</p>
           </div>
         </li>

@@ -6,7 +6,7 @@
           <p><h2><%= @user.name %>さんのアカウント詳細ページ</h2></p>
           <p>メールアドレス： <%= @user.email %></p>
           <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
-          <div class="user_icon"><%= fa_stacked_icon("user", base: "circle-o")  %></div>
+          <i class="far fa-user menu_right user_icon"></i>
           <p>No image</p>
         </div>
       </li>

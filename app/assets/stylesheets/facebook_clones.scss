@@ -25,9 +25,9 @@ ul{
   color: aqua;
 }
 
-.menu li{
-  padding: 2%;
-}
+// .menu li{
+//   padding: 2%;
+// }
 
 .center{
   text-align: center;
@@ -49,7 +49,7 @@ ul{
 .post_area{
   padding: 3%;
   position: relative;
-  background-color: #6A91C1;
+  background-color: #FFEED5;
 }
 
 .list_of_articles{
@@ -281,9 +281,9 @@ h1,h2,h3,h4,h5{
   padding: 5px;
 }
 
-a{
-  color: #FF9800;
-}
+// a{
+//   color: #FF9800;
+// }
 
 .white{
   color: #fff;
@@ -316,13 +316,12 @@ a{
 //   color: aqua;
 // }
 
-// .menu li{
-//   padding-top: 17px;
-//   padding-bottom: 10px;
-//   font-size: 1.5rem;
-//   //padding: 20px;
-//   //display: block;
-// }
+.menu li{
+  padding: 25px;
+  font-size: 1.5rem;
+  //padding: 20px;
+  //display: block;
+}
 
 // //.center{
 // //  text-align: center;
@@ -345,15 +344,15 @@ a{
   padding: 0 10px;
 }
 
-// a{
-//   cursor: pointer;
-// }
+a{
+  cursor: pointer;
+}
 
-// footer{
-//   font-size: 0.75rem;
-//   text-align: center;
-//   padding: 40px 0;
-// }
+footer{
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 40px 0;
+}
 
 b{
  padding: 0 5px;
@@ -366,8 +365,8 @@ b{
 .footer_container{
   padding-left: 0;
   padding-right: 0;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   background-color: #78BBE6;
 }
 
