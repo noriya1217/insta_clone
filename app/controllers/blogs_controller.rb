@@ -13,7 +13,10 @@ class BlogsController < ApplicationController
   end
 
   def update
-    if @blog.update(blog_params)
+    # binding.pry
+    if @blog.user.id != current_user.id
+      different_account
+    elsif @blog.update(blog_params)
       redirect_to root_path, notice: "ブログを編集しました"
     else
       set_blog
@@ -54,6 +57,15 @@ class BlogsController < ApplicationController
 
   def blog_params
     params.require(:blog).permit(:content,:image,:image_cache)
+  end
+
+  def different_account
+    flash[:danger] = '不正なアクセスを検知しました'
+    @blogs = Blog.all
+    @blog = Blog.new
+    favorite = current_user.favorites
+    @blogs_favo = Blog.where(id: favorite.select("blog_id"))
+    render template: 'facebook_clones/index'
   end
 
 end
