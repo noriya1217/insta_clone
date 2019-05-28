@@ -23,7 +23,7 @@ class BlogsController < ApplicationController
       set_blog
       @blogs = Blog.all
       flash.now[:danger] = 'ブログ編集に失敗しました'
-      render template: 'facebook_clones/index'
+      render template: 'insta_clones/index'
     end
   end
 
@@ -33,7 +33,7 @@ class BlogsController < ApplicationController
       favorite = current_user.favorites
       @blogs_favo = Blog.where(id: favorite.select("blog_id"))
       flash.now[:danger] = 'ブログ作成に失敗しました'
-      render template: 'facebook_clones/index'
+      render template: 'insta_clones/index'
     end
   end
 
@@ -66,7 +66,7 @@ class BlogsController < ApplicationController
     @blog = Blog.new
     favorite = current_user.favorites
     @blogs_favo = Blog.where(id: favorite.select("blog_id"))
-    render template: 'facebook_clones/index'
+    render template: 'insta_clones/index'
   end
 
 end

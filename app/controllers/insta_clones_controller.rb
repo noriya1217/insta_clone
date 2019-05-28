@@ -1,4 +1,4 @@
-class FacebookClonesController < ApplicationController
+class InstaClonesController < ApplicationController
   def index
     if params[:back]
       @blog = Blog.new(blog_params)

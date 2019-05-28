@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       redirect_to root_path
     else
       @blog = Blog.new
-      render template: 'facebook_clones/index'
+      render template: 'insta_clones/index'
     end
   end
 
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   def show
     favorite = current_user.favorites
     @blogs_favo = Blog.where(id: favorite.select("blog_id"))
-    @my_blogs = Blog.where(user_id: current_user.id)
+    @my_blogs = Blog.where(user_id: @user.id)
   end
 
   private
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     @blog = Blog.new
     favorite = current_user.favorites
     @blogs_favo = Blog.where(id: favorite.select("blog_id"))
-    render template: 'facebook_clones/index'
+    render template: 'insta_clones/index'
   end
 
 end

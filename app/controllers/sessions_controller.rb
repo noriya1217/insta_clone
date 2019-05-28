@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       @user = User.new if current_user.blank?
       @blog = Blog.new
       # @blogs = Blog.all
-      render template: 'facebook_clones/index'
+      render template: 'insta_clones/index'
     end
   end
 
