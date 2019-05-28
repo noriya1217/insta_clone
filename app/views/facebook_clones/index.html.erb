@@ -131,9 +131,7 @@
         </li>
 
         <li class="hidden-xs hidden-sm col-md-1 b-radius main_contents_area main_contents_background_color">
-          <p>フレンド一覧</p>
-          <p>実装未定</p>
-          <p>インスタグラム課題では実装します</p>
+          スペース
         </li>
 
       </ul>
@@ -180,7 +178,7 @@
             <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
               <h1>Log in</h1><br>
               <p>テスト用アカウント</p>
-              <p>Email : test@test.test　/　Password : testtest</p><br>
+              <p>Email : <%= ENV['SENDGRID_USERNAME'] %>　/　Password : <%= ENV['SENDGRID_PASSWORD'] %></p><br>
               <%= form_with(scope: :session,url: sessions_path,local: true) do |f| %>
                 <table>
                   <tr>

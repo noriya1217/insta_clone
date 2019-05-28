@@ -16,15 +16,15 @@
       <header>
         <nav>
           <ul class="row menu">
-            <li class="col-xs-4 col-sm-4 col-md-5 menu_top_link"><i class="fab fa-instagram"></i>｜instagram_clone</li>
+            <li class="col-xs-4 col-sm-4 col-md-8 menu_top_link"><i class="fab fa-instagram"></i>｜instagram_clone</li>
             <li class="col-xs-2 col-sm-2 col-md-1 center"><a href="https://github.com/noriya1217/facebook_clone">GitHub</a></li>
             <% if logged_in? %>
-              <li class="hidden-xs hidden-sm col-md-3">検索ボックス</li>
+              <%# <li class="hidden-xs hidden-sm col-md-3">検索ボックス</li> %>
               <li class="col-xs-2 col-sm-2 col-md-1 center"><%= link_to "ホーム", facebook_clones_path %></li>
               <li class="col-xs-2 col-sm-2 col-md-1 center"><%= link_to "Profile", user_path(current_user.id) %></li>
               <li class="col-xs-2 col-sm-2 col-md-1 center"><%= link_to "Logout" , session_path(current_user.id), method: :delete %></li>
             <% else %>
-              <li class="col-xs-6 col-sm-6 col-md-"></li>
+              <li class="col-xs-6 col-sm-6 col-md-6"></li>
             <% end %>
           </ul>
         </nav>
