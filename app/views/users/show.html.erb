@@ -14,28 +14,19 @@
           <p><h2><%= @user.name %>さんのアカウント詳細ページ</h2></p>
           <p>メールアドレス： <%= @user.email %></p>
           <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
-          <i class="far fa-user menu_right user_icon"></i>
+          <% if @user.image && @user.image.url %>
+            <%= image_tag(@user.image.url,size: "200x150") %>
+          <% else %>
+            <i class="far fa-user menu_right user_icon"></i>
           <p>No image</p>
+          <% end %>
 
-          <%= form_with(model: @user , local: true) do |form| %>
-            <div class="">
-              <%= form.label '↓クリックでファイル選択' %>
-              <div id="img_field" onClick="$('#file').click()">
-                <% if @user.image.present? %>
-                  <%= image_tag(@user.image.url) %>
-                <% else %>
-                  <i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>
-                <% end %>
-              </div>
-              <%= form.file_field :image, class: "image",id: "file" %>
-              <%#= form.hidden_field :image_cache %>
-              <%#= form.hidden_field :name %>
-              <%#= form.hidden_field :email %>
-              <%#= form.hidden_field :password %>
-              <%#= form.hidden_field :password_confirmation %>
-              <%= form.submit("画像設定",class: "btn btn-primary",
-                    data:{confirm: 'プロフィール画像を設定しますか？',cancel: 'キャンセル',commit: '設定する',title: 'プロフィール画像設定'}) %></td>
-            </div>
+          <br>
+
+          <% if current_user.id == @user.id %>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@blog">編集</button>
+            <%= link_to '削除',blog_path(id: @user.id),method: :delete,class: "btn btn-danger" ,
+                      data: {confirm: '本当に削除してもよろしいですか？',cancel: 'キャンセル',commit: '削除する',title: '削除確認'} %>
           <% end %>
         </div>
       </li>
@@ -119,3 +110,63 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">編集内容</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <%= form_with(model: @user, local: true) do |form| %>
+        <div class="modal-body">
+            <div class="field">
+              <table>
+                <tr>
+                  <td>e-mail</td><td>：</td><td><%= form.text_area :email %></td>
+                </tr>
+                <tr>
+                  <th>画像</th><td>：</td>
+                  <td>
+                    <div class="field image">
+                      <%= form.label '↓クリックでファイル選択' %>
+                      <div id="img_field" onClick="$('#file').click()">
+                        <% if @user.image.present? %>
+                          <%= image_tag(@user.image.url,:size => "200x150") %>
+                        <% else %>
+                          <i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>
+                        <% end %>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <br>
+              <p>画像を変更したい場合は、新しい画像を選択して下さい</p>
+              <%= form.file_field :image,class: "image", style: "display:none;",id: "file" %>
+              <%= form.hidden_field @user.image.url if @user.image && @user.image.url %>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+          <input type="reset" value="リセット" class="btn btn-secondary" id="deleteButton" onclick="img_field_change()">
+            <%= form.submit("確定",class: "btn btn-primary",
+                            data:{confirm: '本当に編集してもよろしいですか？',cancel: 'キャンセル',commit: '編集する',title: '編集確認'}) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  const img_field_change = function(){
+    const img_chenge = document.getElementById('img_field');
+    <% if @user.image && @user.image.url %>
+      img_chenge.innerHTML = '<%= image_tag(@user.image.url,:size => "200x150") %>';
+    <% else %>
+      img_chenge.innerHTML = '<i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>';
+    <% end %>
+  }
+</script>

@@ -29,6 +29,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user.destroy
+    redirect_to root_path,notice: "ブログを削除しました"
+  end
+
   def show
     favorite = current_user.favorites
     @blogs_favo = Blog.where(id: favorite.select("blog_id"))

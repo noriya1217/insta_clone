@@ -28,8 +28,12 @@
           <div class="row profile_background b-radius user_center">
             <p>User：<%= link_to "#{current_user.name}",user_path(current_user.id) %></p>
             <!-- アイコンを設定していなければNoUserImageを表示。設定していたらアップロードした画像を表示-->
-            <%= link_to "", user_path(current_user.id),class: "far fa-user menu_right user_icon" %>
-            <p>No image</p>
+            <% if current_user.image && current_user.image.url %>
+              <%= image_tag(current_user.image.url,size: "150x100") %>
+            <% else %>
+              <i class="far fa-user menu_right user_icon"></i>
+              <p>No image</p>
+            <% end %>
           </div>
         </li>
 
