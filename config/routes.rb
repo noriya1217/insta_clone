@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root "facebook_clones#index"
   resources :sessions, only: [:new,:create,:destroy]
-  resources :users, only: [:new,:create,:show]
+  resources :users, only: [:new,:create,:update,:show]
   resources :facebook_clones, only: [:index]
   resources :favorites,only:[:create,:destroy]
   resources :blogs do
