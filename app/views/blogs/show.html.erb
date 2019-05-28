@@ -5,7 +5,10 @@
         <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
 
           <h2>ブログ記事詳細ページ</h2>
-          <p>投稿したユーザー：<%= @blog.user.name %></p>
+          <p>
+            投稿したユーザー：<%= @blog.user.name %>
+            <%= link_to 'ユーザーのページへ',user_path(@blog.user.id) %>
+          </p>
           <p>
             <% if @blog.image && @blog.image.url %>
               <%= image_tag(@blog.image.url) %>
