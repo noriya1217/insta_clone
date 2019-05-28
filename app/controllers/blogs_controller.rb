@@ -8,6 +8,7 @@ class BlogsController < ApplicationController
 
   def create
     if @blog.save
+      BlogCreateMailer.blog_create_mail(@blog).deliver
       redirect_to root_path, notice: "ブログを作成しました"
     end
   end
