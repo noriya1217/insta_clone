@@ -148,6 +148,7 @@
         <% flash.each do |key,value| %>
           <%= content_tag(:div,value,class: "#{key}") %>
         <% end %>
+
         <% if @blog.errors.any? %>
           <div id="error_explanation">
             <ul>
@@ -171,6 +172,7 @@
         <% end %>
       </li>
     </ul>
+
     <div class="main_contents">
       <ul class="row row-eq-height">
         <li class="col-xs-12 col-sm-12 col-md-6 b-radius main_contents_area main_contents_background_color">
@@ -197,6 +199,7 @@
             </li>
           </ul>
         </li>
+
         <li class="col-xs-12 col-sm-12 col-md-6 b-radius main_contents_area main_contents_background_color">
           <ul class="row row-eq-height">
             <li class="col-xs-12 col-sm-12 col-md-12 b-radius login_form ">
@@ -225,11 +228,28 @@
                     <td><%= f.password_field :password_confirmation %></td>
                   </tr>
 
+                  <tr>
+                    <td><%= f.label :image %></td>
+                    <td>
+                      <div class="field image">
+                        ↓クリックでファイル選択
+                        <div id="img_field" onClick="$('#file').click()">
+                          <%# if f.image.present? %>
+                            <%#= image_tag(f.image.url,:size => "200x150") %>
+                          <%# else %>
+                            <i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>
+                          <%# <% end %>
+                        </div>
+                          <%= f.file_field :image,class: "image",id: "file" %>
+                          <%= f.hidden_field :image_cache %>
+                      </div>
+                    </td>
+                  </tr>
                 </table>
                 <br>
                 <div class="blog_create_button">
                   <%= f.submit "登録する" ,class: "btn btn-primary"%>
-                  <input type="reset" value="リセット" class="btn btn-secondary">
+                  <input type="reset" value="リセット" class="btn btn-secondary" id="deleteButton" onclick="img_field_change()">
                 </div>
               <% end %>
             </li>
@@ -238,5 +258,16 @@
       </ul>
     </div>
   </div>
+
+  <script>
+  const img_field_change = function(){
+    const img_chenge = document.getElementById('img_field');
+    <% if @user.image && @user.image.url %>
+      img_chenge.innerHTML = '<%= image_tag(@user.image.url,:size => "200x150") %>';
+    <% else %>
+      img_chenge.innerHTML = '<i><%= fa_icon("image") %></i><i class="add"><%= fa_icon("upload") %></i>';
+    <% end %>
+  }
+</script>
 
 <% end %>
