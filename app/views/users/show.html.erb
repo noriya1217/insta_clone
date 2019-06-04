@@ -113,6 +113,17 @@
   </div>
 </div>
 
+<h3>フォローしている人</h3>
+<% @following.each do |following| %>
+  <%= following.name %><br>
+<% end %>
+
+<h3>フォローされている人</h3>
+<% @followers.each do |followers| %>
+  <%= followers.name %><br>
+<% end %>
+
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -162,6 +173,8 @@
     </div>
   </div>
 </div>
+
+
 <script>
   const img_field_change = function(){
     const img_chenge = document.getElementById('img_field');

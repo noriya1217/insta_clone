@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user,only:[:show,:update,:destroy]
 
+  def index
+    @users = User.all
+  end
+
   def new
     @user = User.new
   end
@@ -37,6 +41,10 @@ class UsersController < ApplicationController
     favorite = current_user.favorites
     @blogs_favo = Blog.where(id: favorite.select("blog_id"))
     @my_blogs = Blog.where(user_id: @user.id)
+    user = User.find_by(id: params[:id])
+    @following = user.following
+    @followers = user.followers
+    binding.pry
   end
 
   private
