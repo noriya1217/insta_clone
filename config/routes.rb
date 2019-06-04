@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post :confirm
       get  :list
     end
+    resources :comments
   end
   mount LetterOpenerWeb::Engine,at:"/letter_opener" if Rails.env.development?
 end

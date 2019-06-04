@@ -39,6 +39,8 @@ class BlogsController < ApplicationController
 
   def show
     @favorite = current_user.favorites.find_by(blog_id: @blog.id)
+    @comments = @blog.comments
+    @comment = @blog.comments.build
   end
 
   def destroy

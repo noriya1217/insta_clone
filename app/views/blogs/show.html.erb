@@ -22,6 +22,7 @@
             <%= link_to '削除',blog_path(id: @blog.id),method: :delete,class: "btn btn-danger" ,
                       data: {confirm: '本当に削除してもよろしいですか？',cancel: 'キャンセル',commit: '削除する',title: '削除確認'} %>
           <% end %>
+
           <% unless @blog.user_id == current_user.id %>
             <% if @favorite.present? %>
               <%= link_to 'お気に入り解除する',favorite_path(id: @favorite.id),method: :delete,class: 'btn btn-danger' %>
@@ -95,4 +96,35 @@
       </ul>
     </li>
   </ul>
+</div>
+
+<!-- Ajax勉強　ブログ記事にコメント機能搭載 -->
+<div class="container">
+  <p id="notice"><%= notice %></p>
+
+  <div class="blog-text">
+    <h2>ブログ記事詳細ページ</h2>
+      <p>
+        投稿したユーザー：<%= @blog.user.name %>
+        <%= link_to 'ユーザーのページへ',user_path(@blog.user.id) %>
+      </p>
+      <p>
+        <% if @blog.image && @blog.image.url %>
+          <%= image_tag(@blog.image.url) %>
+        <% else %>
+          <%= image_tag('no_image.png') %>
+        <% end %>
+      </p>
+      <p>コメント：<%= @blog.content %></p>
+  </div>
+
+  <p>コメント一覧(ここから下の内容が重要)</p>
+  <!-- comments_areaというHTMLのidを取得して、そのdivの部分だけを更新する -->
+  <div id="comments_area">
+    <!-- 投稿されたコメント一覧をブログの詳細ページに表示するためのrender -->
+    <%= render partial: 'comments/index',locals: { comments: @comments , blog: @blog } %>
+  </div>
+  <!-- コメント入力欄をblog/showページに表示するためのrender -->
+  <%= render partial: 'comments/form',locals: { comment: @comment,blog: @blog} %>
+
 </div>
