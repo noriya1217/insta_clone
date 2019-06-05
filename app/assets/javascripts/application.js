@@ -15,6 +15,7 @@
 //= require modaal/dist/js/modaal
 //= require bootstrap/dist/js/bootstrap
 //= require data-confirm-modal
+//= require turbolinks
 //= require_tree .
 
 
